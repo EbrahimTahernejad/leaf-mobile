@@ -35,7 +35,9 @@ jobs:
       - name: build
         run: |
           cd leaf
+          export IPHONEOS_DEPLOYMENT_TARGET=`12.0`
           make ios
+          unset IPHONEOS_DEPLOYMENT_TARGET
       
       - name: create xcframework
         run: |
