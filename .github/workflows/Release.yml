@@ -47,15 +47,15 @@ jobs:
                      -output ./Leaf.xcframework
           zip -r ./Leaf.xcframework.zip ./Leaf.xcframework
        
-       - name: Detect checksum
-         run: |
-           export TEMP=`shasum -a 256 leaf/Leaf.xcframework.zip`
-           export CHECKSUM=${TEMP:0:64}
-           echo "FILE_CHECKSUM=${CHECKSUM}" >> $GITHUB_ENV
-           unset CHECKSUM
-           unset TEMP
+      - name: detect checksum
+        run: |
+          export TEMP=`shasum -a 256 leaf/Leaf.xcframework.zip`
+          export CHECKSUM=${TEMP:0:64}
+          echo "FILE_CHECKSUM=${CHECKSUM}" >> $GITHUB_ENV
+          unset CHECKSUM
+          unset TEMP
        
-       - name: Update package file
+      - name: Update package file
         run: |
           echo "// swift-tools-version: 5.7" > Package.swift
           echo "" >> Package.swift
