@@ -16,9 +16,9 @@ jobs:
         uses: actions/checkout@v3
         
       - name: checkout leaf
-        repository: 'eycorsican/leaf'
         uses: actions/checkout@v3
         with:
+          repository: 'eycorsican/leaf'
           path: 'leaf'
           submodules: true
           
@@ -55,7 +55,7 @@ jobs:
           unset CHECKSUM
           unset TEMP
        
-      - name: Update package file
+      - name: update package file
         run: |
           echo "// swift-tools-version: 5.7" > Package.swift
           echo "" >> Package.swift
@@ -84,7 +84,7 @@ jobs:
           tagging_message: ${{ github.event.inputs.version }}
           file_pattern: 'Package.swift'
           
-      - name: Upload Release
+      - name: upload release
         uses: softprops/action-gh-release@v1
         with:
           draft: false
