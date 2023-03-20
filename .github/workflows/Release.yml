@@ -1,0 +1,92 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version'     
+        required: true
+        type: string
+
+jobs:
+  release:
+    runs-on: macOS-12
+    steps:
+      - name: checkout
+        uses: actions/checkout@v3
+        
+      - name: checkout leaf
+        repository: 'eycorsican/leaf'
+        uses: actions/checkout@v3
+        with:
+          path: 'leaf'
+          submodules: true
+          
+      - name: install rust toolchain
+        uses: hecrj/setup-rust-action@v1
+        with:
+          rust-version: nightly
+      
+      - name: install llvm
+        run: |
+          brew update && brew install llvm protobuf
+      
+      - name: build
+        run: |
+          cd leaf
+          make ios
+      
+      - name: create xcframework
+        run: |
+          cd leaf
+          mkdir include
+          cp ./target/aarch64-apple-ios/release/leaf.h ./include/leaf.h
+          xcodebuild -create-xcframework \
+                     -library ./target/aarch64-apple-ios/release/libleaf.a \
+                     -headers ./include \
+                     -output ./Leaf.xcframework
+          zip -r ./Leaf.xcframework.zip ./Leaf.xcframework
+       
+       - name: Detect checksum
+         run: |
+           export TEMP=`shasum -a 256 leaf/Leaf.xcframework.zip`
+           export CHECKSUM=${TEMP:0:64}
+           echo "FILE_CHECKSUM=${CHECKSUM}" >> $GITHUB_ENV
+           unset CHECKSUM
+           unset TEMP
+       
+       - name: Update package file
+        run: |
+          echo "// swift-tools-version: 5.7" > Package.swift
+          echo "" >> Package.swift
+          echo "import PackageDescription" >> Package.swift
+          echo "" >> Package.swift
+          echo "let package = Package(" >> Package.swift
+          echo "  name: \"Leaf\"," >> Package.swift
+          echo "  platforms: [.iOS(.v12)]," >> Package.swift
+          echo "  products: [" >> Package.swift
+          echo "    .library(name: \"Leaf\", targets: [\"Leaf\"])" >> Package.swift
+          echo "  ]," >> Package.swift
+          echo "  targets: [" >> Package.swift
+          echo "    .binaryTarget(" >> Package.swift
+          echo "      name: \"Leaf\"," >> Package.swift
+          echo "      url: \"https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/${{ github.event.inputs.version }}/Leaf.xcframework.zip\"," >> Package.swift
+          echo "      checksum: \"${{ env.FILE_CHECKSUM }}\"" >> Package.swift
+          echo "    )" >> Package.swift
+          echo "  ]" >> Package.swift
+          echo ")" >> Package.swift
+          
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Leaf Lib Release ${{ github.event.inputs.version }}
+          commit_user_name: Ebrahim
+          commit_user_email: ebrahimtahernejad@gmail.com
+          tagging_message: ${{ github.event.inputs.version }}
+          file_pattern: 'Package.swift'
+          
+      - name: Upload Release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: false
+          tag_name: ${{ github.event.inputs.version }}
+          files: box/Leaf.xcframework.zip
