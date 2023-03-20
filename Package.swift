@@ -11,8 +11,8 @@ let package = Package(
   targets: [
     .binaryTarget(
       name: "Leaf",
-      url: "https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/0.1.0/Leaf.xcframework.zip",
-      checksum: "9f0c950e1a038864fae54e10f429cc103dbbf7efe3d973d50797316853b0587e"
+      url: "https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/0.1.1/Leaf.xcframework.zip",
+      checksum: "9a07e9352953b25e9cbeaabc145db5823fb9ed1e19a0b7feea73980b7cc82e8d"
     )
   ]
 )
