@@ -25,6 +25,7 @@ jobs:
       - name: install rust toolchain
         uses: hecrj/setup-rust-action@v1
         with:
+          targets: aarch64-apple-ios
           rust-version: nightly
       
       - name: install llvm
