@@ -27,14 +27,14 @@ public enum Leaf {
     
     public typealias Completion = (Error?) -> ()
     
-    public func start(with configPath: String, identifier: UInt16 = 1, completionHandler: Completion? = nil) {
+    public static func start(with configPath: String, identifier: UInt16 = 1, completionHandler: Completion? = nil) {
         DispatchQueue.global(qos: .userInitiated).async { [completionHandler, identifier, configPath] () in
             let result = leaf_run(identifier, configPath.cString(using: .utf8))
             completionHandler?(Error(with: result))
         }
     }
     
-    public func stop(identifier: UInt16 = 1) -> Bool {
+    public static func stop(identifier: UInt16 = 1) -> Bool {
         leaf_shutdown(identifier);
     }
 }
