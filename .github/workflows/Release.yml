@@ -47,7 +47,7 @@ jobs:
           xcodebuild -create-xcframework \
                      -library ./target/aarch64-apple-ios/release/libleaf.a \
                      -headers ./include \
-                     -output ./LeafLib.xcframework
+                     -output ./LibLeaf.xcframework
           zip -r ./LibLeaf.xcframework.zip ./LibLeaf.xcframework
        
       - name: detect checksum
