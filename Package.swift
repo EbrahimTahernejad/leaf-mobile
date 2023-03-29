@@ -13,8 +13,8 @@ let package = Package(
     .target(name: "LeafC", dependencies: ["LeafLib"], path: "Sources/LeafC")
     .binaryTarget(
       name: "LeafLib",
-      url: "https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/3.0.4/Leaf.xcframework.zip",
-      checksum: "4ab706c7143eda74e13a3b6e600351adb85e271175ddd3c5b096dd2efb5363b0"
+      url: "https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/1.0.0/Leaf.xcframework.zip",
+      checksum: "5af16ef72a24996f3687f36b728ace35db56186bd5891432d69aae207d7732c0"
     )
   ]
 )
