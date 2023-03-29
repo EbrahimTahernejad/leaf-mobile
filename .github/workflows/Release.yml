@@ -71,8 +71,10 @@ jobs:
           echo "    .library(name: \"Leaf\", targets: [\"Leaf\"])" >> Package.swift
           echo "  ]," >> Package.swift
           echo "  targets: [" >> Package.swift
+          echo "    .target(name: \"Leaf\", dependencies: [\"LeafC\"], path: \"Sources/Leaf\", sources: [\"Leaf.swift\"])" >> Package.swift
+          echo "    .target(name: \"LeafC\", dependencies: [\"LeafLib\"], path: \"Sources/LeafC\")" >> Package.swift
           echo "    .binaryTarget(" >> Package.swift
-          echo "      name: \"Leaf\"," >> Package.swift
+          echo "      name: \"LeafLib\"," >> Package.swift
           echo "      url: \"https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/${{ github.event.inputs.version }}/Leaf.xcframework.zip\"," >> Package.swift
           echo "      checksum: \"${{ env.FILE_CHECKSUM }}\"" >> Package.swift
           echo "    )" >> Package.swift
