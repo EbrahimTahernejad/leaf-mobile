@@ -10,11 +10,11 @@ let package = Package(
   ],
   targets: [
     .target(name: "Leaf", dependencies: ["LeafC"], path: "Sources/Leaf", sources: ["Leaf.swift"])
-    .target(name: "LeafC", dependencies: ["LeafLib"], path: "Sources/LeafC")
+    .target(name: "LeafC", dependencies: ["LibLeaf"], path: "Sources/LeafC")
     .binaryTarget(
-      name: "LeafLib",
-      url: "https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/1.0.0/Leaf.xcframework.zip",
-      checksum: "5af16ef72a24996f3687f36b728ace35db56186bd5891432d69aae207d7732c0"
+      name: "LibLeaf",
+      url: "https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/1.0.2/LibLeaf.xcframework.zip",
+      checksum: "00a5a543af75b9021f9c59527df1e63b7df6cedcc4ad47316de822a1e1cb7fec"
     )
   ]
 )
