@@ -71,8 +71,8 @@ jobs:
           echo "    .library(name: \"Leaf\", targets: [\"Leaf\"])" >> Package.swift
           echo "  ]," >> Package.swift
           echo "  targets: [" >> Package.swift
-          echo "    .target(name: \"Leaf\", dependencies: [\"LeafC\"], path: \"Sources/Leaf\", sources: [\"Leaf.swift\"])" >> Package.swift
-          echo "    .target(name: \"LeafC\", dependencies: [\"LibLeaf\"], path: \"Sources/LeafC\")" >> Package.swift
+          echo "    .target(name: \"Leaf\", dependencies: [\"LeafC\"], path: \"Sources/Leaf\", sources: [\"Leaf.swift\"])," >> Package.swift
+          echo "    .target(name: \"LeafC\", dependencies: [\"LibLeaf\"], path: \"Sources/LeafC\")," >> Package.swift
           echo "    .binaryTarget(" >> Package.swift
           echo "      name: \"LibLeaf\"," >> Package.swift
           echo "      url: \"https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/${{ github.event.inputs.version }}/LibLeaf.xcframework.zip\"," >> Package.swift
