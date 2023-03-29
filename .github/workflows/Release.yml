@@ -47,12 +47,12 @@ jobs:
           xcodebuild -create-xcframework \
                      -library ./target/aarch64-apple-ios/release/libleaf.a \
                      -headers ./include \
-                     -output ./Leaf.xcframework
-          zip -r ./Leaf.xcframework.zip ./Leaf.xcframework
+                     -output ./LeafLib.xcframework
+          zip -r ./LibLeaf.xcframework.zip ./LibLeaf.xcframework
        
       - name: detect checksum
         run: |
-          export TEMP=`shasum -a 256 leaf/Leaf.xcframework.zip`
+          export TEMP=`shasum -a 256 leaf/LibLeaf.xcframework.zip`
           export CHECKSUM=${TEMP:0:64}
           echo "FILE_CHECKSUM=${CHECKSUM}" >> $GITHUB_ENV
           unset CHECKSUM
@@ -72,10 +72,10 @@ jobs:
           echo "  ]," >> Package.swift
           echo "  targets: [" >> Package.swift
           echo "    .target(name: \"Leaf\", dependencies: [\"LeafC\"], path: \"Sources/Leaf\", sources: [\"Leaf.swift\"])" >> Package.swift
-          echo "    .target(name: \"LeafC\", dependencies: [\"LeafLib\"], path: \"Sources/LeafC\")" >> Package.swift
+          echo "    .target(name: \"LeafC\", dependencies: [\"LibLeaf\"], path: \"Sources/LeafC\")" >> Package.swift
           echo "    .binaryTarget(" >> Package.swift
-          echo "      name: \"LeafLib\"," >> Package.swift
-          echo "      url: \"https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/${{ github.event.inputs.version }}/Leaf.xcframework.zip\"," >> Package.swift
+          echo "      name: \"LibLeaf\"," >> Package.swift
+          echo "      url: \"https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/${{ github.event.inputs.version }}/LibLeaf.xcframework.zip\"," >> Package.swift
           echo "      checksum: \"${{ env.FILE_CHECKSUM }}\"" >> Package.swift
           echo "    )" >> Package.swift
           echo "  ]" >> Package.swift
@@ -94,4 +94,4 @@ jobs:
         with:
           draft: false
           tag_name: ${{ github.event.inputs.version }}
-          files: leaf/Leaf.xcframework.zip
+          files: leaf/LibLeaf.xcframework.zip
