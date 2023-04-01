@@ -36,8 +36,9 @@ jobs:
         run: |
           cd leaf
           export IPHONEOS_DEPLOYMENT_TARGET=`12.0`
-          chmod +x ../build.sh
-          ../build.sh
+          cp ../build.sh scripts/my_ios_build.sh
+          chmod +x scripts/my_ios_build.sh
+          ./scripts/my_ios_build.sh
           unset IPHONEOS_DEPLOYMENT_TARGET
       
       - name: create xcframework
