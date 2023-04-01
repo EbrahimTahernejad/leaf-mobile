@@ -7,6 +7,7 @@ release_flag=--release
 package=leaf-ffi
 name=leaf
 lib=lib$name.a
+libname=LibLeaf
 
 # The script is assumed to run in the root of the workspace
 base=$(dirname "$0")
@@ -37,11 +38,11 @@ cbindgen \
 wd="$base/../target/apple/$mode"
 
 # Remove existing artifact
-rm -rf "$wd/$name.xcframework"
+rm -rf "$wd/$libname.xcframework"
 
 # A modulemap is required for the compiler to find the module when using Swift
 cat << EOF > "$wd/include/module.modulemap"
-module $name {
+module $libname {
     header "$name.h"
     export *
 }
@@ -52,6 +53,6 @@ EOF
 xcodebuild -create-xcframework \
 	-library "$wd/ios/$lib" \
 	-headers "$wd/include" \
-	-output "$wd/$name.xcframework"
+	-output "$wd/$libname.xcframework"
 
-ls $wd/$name.xcframework
+ls $wd/$libname.xcframework
