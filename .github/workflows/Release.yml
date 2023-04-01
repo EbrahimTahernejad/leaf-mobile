@@ -36,6 +36,7 @@ jobs:
         run: |
           cd leaf
           export IPHONEOS_DEPLOYMENT_TARGET=`12.0`
+          chmod +x ../build.sh
           ../build.sh
           unset IPHONEOS_DEPLOYMENT_TARGET
       
