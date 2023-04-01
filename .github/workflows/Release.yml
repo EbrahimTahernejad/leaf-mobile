@@ -10,7 +10,7 @@ on:
 
 jobs:
   release:
-    runs-on: macOS-12
+    runs-on: macos-latest
     steps:
       - name: checkout
         uses: actions/checkout@v3
@@ -22,33 +22,28 @@ jobs:
           path: 'leaf'
           submodules: true
           
-      - name: install rust toolchain
+      - name: install rust
         uses: hecrj/setup-rust-action@v1
         with:
-          targets: aarch64-apple-ios
-          rust-version: nightly
-      
-      - name: install llvm
+          rust-version: stable
+          
+      - name: install toolchain
         run: |
-          brew update && brew install llvm protobuf
+          cargo install cbindgen
+          brew update && brew install llvm unzip protobuf
       
       - name: build
         run: |
           cd leaf
           export IPHONEOS_DEPLOYMENT_TARGET=`12.0`
-          make ios
+          ../build.sh
           unset IPHONEOS_DEPLOYMENT_TARGET
       
       - name: create xcframework
         run: |
           cd leaf
-          mkdir include
-          cp ./target/aarch64-apple-ios/release/leaf.h ./include/leaf.h
-          xcodebuild -create-xcframework \
-                     -library ./target/aarch64-apple-ios/release/libleaf.a \
-                     -headers ./include \
-                     -output ./LibLeaf.xcframework
-          zip -r ./LibLeaf.xcframework.zip ./LibLeaf.xcframework
+          mv target/apple/release/LibLeaf.xcframework .
+          zip -r LibLeaf.xcframework.zip LibLeaf.xcframework
        
       - name: detect checksum
         run: |
@@ -71,8 +66,7 @@ jobs:
           echo "    .library(name: \"Leaf\", targets: [\"Leaf\"])" >> Package.swift
           echo "  ]," >> Package.swift
           echo "  targets: [" >> Package.swift
-          echo "    .target(name: \"Leaf\", dependencies: [\"LeafC\"], path: \"Sources/Leaf\", sources: [\"Leaf.swift\"])," >> Package.swift
-          echo "    .target(name: \"LeafC\", dependencies: [\"LibLeaf\"], path: \"Sources/LeafC\")," >> Package.swift
+          echo "    .target(name: \"Leaf\", dependencies: [\"LibLeaf\"], path: \"Sources/Leaf\", sources: [\"Leaf.swift\"])," >> Package.swift
           echo "    .binaryTarget(" >> Package.swift
           echo "      name: \"LibLeaf\"," >> Package.swift
           echo "      url: \"https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/${{ github.event.inputs.version }}/LibLeaf.xcframework.zip\"," >> Package.swift
