@@ -43,7 +43,7 @@ rm -rf "$wd/$libname.xcframework"
 # A modulemap is required for the compiler to find the module when using Swift
 cat << EOF > "$wd/include/$libname.modulemap"
 module $libname {
-    header "$name.h"
+    umbrella header "$name.h"
     export *
 }
 EOF
