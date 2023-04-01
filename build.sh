@@ -41,7 +41,7 @@ wd="$base/../target/apple/$mode"
 rm -rf "$wd/$libname.xcframework"
 
 # A modulemap is required for the compiler to find the module when using Swift
-cat << EOF > "$wd/include/module.modulemap"
+cat << EOF > "$wd/include/$libname.modulemap"
 module $libname {
     header "$name.h"
     export *
