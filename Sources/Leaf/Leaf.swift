@@ -27,7 +27,7 @@ public enum Leaf {
     
     public typealias Completion = (Error?) -> ()
     
-    public static func start(with configPath: String, identifier: UInt16 = 1, completionHandler: Completion? = nil) {
+    public static func start(with configPath: String, identifier: UInt16 = 1, completionHandler: @escaping Completion? = nil) {
         DispatchQueue.global(qos: .userInitiated).async { [completionHandler, identifier, configPath] () in
             let result = leaf_run(identifier, configPath.cString(using: .utf8))
             completionHandler?(Error(with: result))
