@@ -46,8 +46,8 @@ public enum Leaf {
     
     public typealias Completion = (Error?) -> ()
     
-    public static func start(with config: Config, identifier: UInt16 = 1, completionHandler: @escaping Completion? = nil) {
-        DispatchQueue.global(qos: .userInitiated).async { [completionHandler, identifier, configPath] () in
+    public static func start(with config: Config, identifier: UInt16 = 1, completionHandler: Completion? = nil) {
+        DispatchQueue.global(qos: .userInitiated).async { [completionHandler, identifier, config] () in
             let result = { [config, identifier] () in
                 switch config {
                 case .file(let path):
