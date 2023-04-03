@@ -60,6 +60,7 @@ public enum Leaf {
         }
     }
     
+    @discardableResult
     public static func stop(identifier: UInt16 = 1) -> Bool {
         return leafShutdown(identifier);
     }
