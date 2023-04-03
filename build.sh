@@ -52,7 +52,6 @@ EOF
 # use a single XCFramework for both platforms.
 xcodebuild -create-xcframework \
 	-library "$wd/ios/$lib" \
-	-headers "$wd/include" \
 	-output "$wd/$libname.xcframework"
 
 ls $wd/$libname.xcframework
