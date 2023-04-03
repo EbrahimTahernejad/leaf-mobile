@@ -15,8 +15,8 @@ import Foundation
         _ rt_id: UInt16
     ) -> Bool
 
-enum Leaf {
-    enum Error: Int32, Swift.Error {
+public enum Leaf {
+    public enum Error: Int32, Swift.Error {
         case configPath = 1 // ERR_CONFIG_PATH
         case config = 2 // ERR_CONFIG
         case io = 3 // ERR_IO
@@ -39,14 +39,14 @@ enum Leaf {
         }
     }
     
-    enum Config {
+    public enum Config {
         case file(path: String)
         case string(content: String)
     }
     
-    typealias Completion = (Error?) -> ()
+    public typealias Completion = (Error?) -> ()
     
-    static func start(with config: Config, identifier: UInt16 = 1, completionHandler: @escaping Completion? = nil) {
+    public static func start(with config: Config, identifier: UInt16 = 1, completionHandler: @escaping Completion? = nil) {
         DispatchQueue.global(qos: .userInitiated).async { [completionHandler, identifier, configPath] () in
             let result = { [config, identifier] () in
                 switch config {
@@ -60,7 +60,7 @@ enum Leaf {
         }
     }
     
-    static func stop(identifier: UInt16 = 1) -> Bool {
+    public static func stop(identifier: UInt16 = 1) -> Bool {
         return leafShutdown(identifier);
     }
 }
