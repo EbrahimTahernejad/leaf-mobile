@@ -1,8 +1,22 @@
-import LibLeaf
 import Foundation
 
-public enum Leaf {
-    public enum Error: Int32, Swift.Error {
+@_silgen_name("leaf_run")
+    fileprivate func leafRun(
+        _ rt_id: UInt16,
+        _ config_path: UnsafePointer<CChar>!
+    ) -> Int32
+@_silgen_name("leaf_run_with_config_string")
+    fileprivate func leafRunStr(
+        _ rt_id: UInt16,
+        _ config: UnsafePointer<CChar>!
+    ) -> Int32
+@_silgen_name("leaf_shutdown")
+    fileprivate func leafShutdown(
+        _ rt_id: UInt16
+    ) -> Bool
+
+enum Leaf {
+    enum Error: Int32, Swift.Error {
         case configPath = 1 // ERR_CONFIG_PATH
         case config = 2 // ERR_CONFIG
         case io = 3 // ERR_IO
@@ -25,16 +39,28 @@ public enum Leaf {
         }
     }
     
-    public typealias Completion = (Error?) -> ()
+    enum Config {
+        case file(path: String)
+        case string(content: String)
+    }
     
-    public static func start(with configPath: String, identifier: UInt16 = 1, completionHandler: @escaping Completion? = nil) {
+    typealias Completion = (Error?) -> ()
+    
+    static func start(with config: Config, identifier: UInt16 = 1, completionHandler: @escaping Completion? = nil) {
         DispatchQueue.global(qos: .userInitiated).async { [completionHandler, identifier, configPath] () in
-            let result = leaf_run(identifier, configPath.cString(using: .utf8))
+            let result = { [config, identifier] () in
+                switch config {
+                case .file(let path):
+                    leafRun(identifier, path.cString(using: .utf8))
+                case .string(let content):
+                    leafRunStr(identifier, content.cString(using: .utf8))
+                }
+            }()
             completionHandler?(Error(with: result))
         }
     }
     
-    public static func stop(identifier: UInt16 = 1) -> Bool {
-        leaf_shutdown(identifier);
+    static func stop(identifier: UInt16 = 1) -> Bool {
+        return leafShutdown(identifier);
     }
 }
