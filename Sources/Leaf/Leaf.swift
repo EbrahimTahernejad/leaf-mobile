@@ -48,12 +48,12 @@ public enum Leaf {
     
     public static func start(with config: Config, identifier: UInt16 = 1, completionHandler: Completion? = nil) {
         DispatchQueue.global(qos: .userInitiated).async { [completionHandler, identifier, config] () in
-            let result = { [config, identifier] () in
+            let result = { [config, identifier] () -> Int32 in
                 switch config {
                 case .file(let path):
-                    leafRun(identifier, path.cString(using: .utf8))
+                    return leafRun(identifier, path.cString(using: .utf8))
                 case .string(let content):
-                    leafRunStr(identifier, content.cString(using: .utf8))
+                    return leafRunStr(identifier, content.cString(using: .utf8))
                 }
             }()
             completionHandler?(Error(with: result))
