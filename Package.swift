@@ -12,8 +12,8 @@ let package = Package(
     .target(name: "Leaf", dependencies: ["LibLeaf"], path: "Sources/Leaf", sources: ["Leaf.swift"]),
     .binaryTarget(
       name: "LibLeaf",
-      url: "https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/2.0.5/LibLeaf.xcframework.zip",
-      checksum: "89946a5f6fd02253424b9e89006f9f7fe363432cbda9c3a67e79a9346fb95e65"
+      url: "https://github.com/EbrahimTahernejad/leaf-mobile/releases/download/2.0.6/LibLeaf.xcframework.zip",
+      checksum: "c9022d097df697ed675c1619c0796f60814f1e04d74a6c845622761c2f92ba7f"
     )
   ]
 )
