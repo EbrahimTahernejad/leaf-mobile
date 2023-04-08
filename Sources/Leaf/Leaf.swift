@@ -22,7 +22,7 @@ public enum Leaf {
         case io = 3 // ERR_IO
         case watcher = 4 // ERR_WATCHER
         case asyncChannelSend = 5 // ERR_ASYNC_CHANNEL_SEND
-        case asyncChannelReceive = 6 // ERR_SYNC_CHANNEL_RECV
+        case syncChannelReceive = 6 // ERR_SYNC_CHANNEL_RECV
         case runtimeManager = 7 // ERR_RUNTIME_MANAGER
         case noConfigFile = 8 // ERR_NO_CONFIG_FILE
         case unknown = 99
