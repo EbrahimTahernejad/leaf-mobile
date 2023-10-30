@@ -49,8 +49,8 @@ public enum Leaf {
     }
 
     public struct Stats {
-        let upload: UInt64
-        let download: UInt64
+        public let upload: UInt64
+        public let download: UInt64
     }
     
     public typealias Completion = (Error?) -> ()
