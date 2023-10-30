@@ -30,7 +30,6 @@ jobs:
       - name: install toolchain
         run: |
           cargo install cbindgen
-          brew update && brew install llvm unzip protobuf
       
       - name: build
         run: |
