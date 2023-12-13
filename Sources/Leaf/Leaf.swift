@@ -46,7 +46,7 @@ public enum Leaf {
     
     public typealias Completion = (Error?) -> ()
     
-    public static func start(with config: Config, identifier: UInt16 = 1, completionHandler: Completion? = nil) {
+    /*public static func start(with config: Config, identifier: UInt16 = 1, completionHandler: Completion? = nil) {
         DispatchQueue.global(qos: .userInteractive).async { [completionHandler, identifier, config] () in
             let result = { [config, identifier] () -> Int32 in
                 switch config {
@@ -58,7 +58,7 @@ public enum Leaf {
             }()
             completionHandler?(Error(with: result))
         }
-    }
+    }*/
 
     public static func start(with config: Config, identifier: UInt16 = 1) throws {
         let result = { [config, identifier] () -> Int32 in
