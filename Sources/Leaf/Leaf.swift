@@ -14,10 +14,6 @@ import Foundation
     fileprivate func leafShutdown(
         _ rt_id: UInt16
     ) -> Bool
-@_silgen_name("leaf_get_uploaded_bytes")
-    fileprivate func getUpload() -> UInt64
-@_silgen_name("leaf_get_downloaded_bytes")
-    fileprivate func getDownload() -> UInt64
 
 public enum Leaf {
     public enum Error: Int32, Swift.Error {
@@ -47,11 +43,6 @@ public enum Leaf {
         case file(path: String)
         case string(content: String)
     }
-
-    public struct Stats {
-        public let upload: UInt64
-        public let download: UInt64
-    }
     
     public typealias Completion = (Error?) -> ()
     
@@ -67,10 +58,6 @@ public enum Leaf {
             }()
             completionHandler?(Error(with: result))
         }
-    }
-
-    public static func getStats() -> Stats {
-        return Stats(upload: getUpload(), download: getDownload())
     }
     
     @discardableResult
