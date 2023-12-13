@@ -47,7 +47,7 @@ public enum Leaf {
     public typealias Completion = (Error?) -> ()
     
     public static func start(with config: Config, identifier: UInt16 = 1, completionHandler: Completion? = nil) {
-        DispatchQueue.global(qos: .userInitiated).async { [completionHandler, identifier, config] () in
+        DispatchQueue.global(qos: .userInteractive).async { [completionHandler, identifier, config] () in
             let result = { [config, identifier] () -> Int32 in
                 switch config {
                 case .file(let path):
@@ -57,6 +57,20 @@ public enum Leaf {
                 }
             }()
             completionHandler?(Error(with: result))
+        }
+    }
+
+    public static func start(with config: Config, identifier: UInt16 = 1) throws {
+        let result = { [config, identifier] () -> Int32 in
+            switch config {
+            case .file(let path):
+                return leafRun(identifier, path.cString(using: .utf8))
+            case .string(let content):
+                return leafRunStr(identifier, content.cString(using: .utf8))
+            }
+        }()
+        if let error = Error(with: result) {
+            throw error
         }
     }
     
